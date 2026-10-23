@@ -3,6 +3,8 @@
 #include <sstream>
 #include <vector>
 #include <cstring>
+#include <arpa/inet.h>
+#include <netinet/in.h>
 
 NetworkManager::NetworkManager() : socket(nullptr), udpSocket(nullptr) {}
 
@@ -28,6 +30,15 @@ void NetworkManager::cleanup() {
         udpSocket = nullptr;
     }
     SDLNet_Quit();
+}
+
+// Helper function to convert IPaddress to string
+std::string IPToString(const IPaddress* ip) {
+    char ipStr[256];
+    uint32_t host = SDL_SwapBE32(ip->host);
+    uint8_t* bytes = (uint8_t*)&host;
+    snprintf(ipStr, sizeof(ipStr), "%d.%d.%d.%d", bytes[0], bytes[1], bytes[2], bytes[3]);
+    return std::string(ipStr);
 }
 
 std::string NetworkManager::httpGet(const std::string& url) {
@@ -159,21 +170,18 @@ bool NetworkManager::connectToServer(const std::string& host, int port) {
 
 std::string NetworkManager::getMediaList() {
     // API endpoint for media list
-    char ipStr[256];
-    SDLNet_GetIPString(&serverAddress, ipStr, sizeof(ipStr));
-    return httpGet("http://" + std::string(ipStr) + ":8080/api/media");
+    std::string ipStr = IPToString(&serverAddress);
+    return httpGet("http://" + ipStr + ":8080/api/media");
 }
 
 std::string NetworkManager::getMediaInfo(const std::string& id) {
-    char ipStr[256];
-    SDLNet_GetIPString(&serverAddress, ipStr, sizeof(ipStr));
-    return httpGet("http://" + std::string(ipStr) + ":8080/api/media/" + id);
+    std::string ipStr = IPToString(&serverAddress);
+    return httpGet("http://" + ipStr + ":8080/api/media/" + id);
 }
 
 std::string NetworkManager::streamMedia(const std::string& id) {
-    char ipStr[256];
-    SDLNet_GetIPString(&serverAddress, ipStr, sizeof(ipStr));
-    return httpGet("http://" + std::string(ipStr) + ":8080/stream/" + id);
+    std::string ipStr = IPToString(&serverAddress);
+    return httpGet("http://" + ipStr + ":8080/stream/" + id);
 }
 
 bool NetworkManager::connectWebSocket(const std::string& url) {
