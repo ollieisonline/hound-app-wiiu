@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<app version="1">
+  <name>Hound App Simple</name>
+  <coder>Hound Media Server</coder>
+  <version>1.0.0</version>
+  <release_date>20241023</release_date>
+  <short_description>Simple Hound App for Wii U</short_description>
+  <long_description>Simplified version of Hound App for Wii U with minimal dependencies. Navigate with D-Pad, select with A button.</long_description>
+  <ahb_access needed="true"/>
+</app>
