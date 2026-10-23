@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<app version="1">
+  <name>Hound App</name>
+  <coder>Hound Media Server</coder>
+  <version>1.0.0</version>
+  <release_date>20241023</release_date>
+  <short_description>Stream media from your Hound server</short_description>
+  <long_description>Hound App for Wii U allows you to stream media from your Hound Media Server to your Wii U console. Browse your media library, watch movies and TV shows, and listen to music.</long_description>
+  <ahb_access needed="true"/>
+</app>
