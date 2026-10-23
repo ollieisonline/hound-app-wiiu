@@ -49,7 +49,7 @@ bool App::init() {
 }
 
 bool App::initSDL() {
-    if (SDL_Init(SDL_INIT_VIDEO | SDL_INIT_JOYSTICK | SDL_INIT_NET | SDL_INIT_GAMECONTROLLER) < 0) {
+    if (SDL_Init(SDL_INIT_VIDEO | SDL_INIT_JOYSTICK | SDL_INIT_EVENTS | SDL_INIT_GAMECONTROLLER) < 0) {
         std::cerr << "SDL could not initialize: " << SDL_GetError() << std::endl;
         return false;
     }

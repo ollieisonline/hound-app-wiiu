@@ -7,7 +7,11 @@ project(HoundAppWiiU CXX C)
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
-# Find required packages
+# Wii U toolchain settings
+set(CMAKE_TOOLCHAIN_FILE ${WUT_ROOT}/share/wut.toolchain.cmake CACHE STRING "Wii U toolchain")
+
+# Find required packages - use devkitPro CMake wrappers
+find_package(WiiU REQUIRED)
 find_package(SDL2 REQUIRED)
 find_package(SDL2_image REQUIRED)
 find_package(SDL2_ttf REQUIRED)
@@ -28,6 +32,7 @@ link_directories(
     ${SDL2_IMAGE_LIBRARY_DIRS}
     ${SDL2_TTF_LIBRARY_DIRS}
     ${SDL2_NET_LIBRARY_DIRS}
+    ${WUT_ROOT}/portlibs/wiiu/lib
 )
 
 # Source files
@@ -46,12 +51,13 @@ target_link_libraries(hound_app_wiiu
     wut
 )
 
-# Output directory
+# Wii U specific settings
 set_target_properties(hound_app_wiiu PROPERTIES
     RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/output
+    SUFFIX ".rpx"
 )
 
-# Install target (for RPX generation)
+# Install target
 install(TARGETS hound_app_wiiu
     RUNTIME DESTINATION bin
 )

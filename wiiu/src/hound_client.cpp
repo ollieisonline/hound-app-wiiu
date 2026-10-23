@@ -139,7 +139,7 @@ bool HoundClient::login(const std::string& username, const std::string& password
         return false;
     }
     
-    std::string authData = "{" \"username\": \"" + username + "\", \"password\": \"" + password + "\" }";
+    std::string authData = "{\"username\": \"" + username + "\", \"password\": \"" + password + "\"}";
     std::string response = network.httpPost("http://" + serverHost + ":" + std::to_string(serverPort) + "/api/login", authData);
     
     // Parse response for session token

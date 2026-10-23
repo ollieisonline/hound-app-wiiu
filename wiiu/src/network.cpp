@@ -2,6 +2,7 @@
 #include <iostream>
 #include <sstream>
 #include <vector>
+#include <cstring>
 
 NetworkManager::NetworkManager() : socket(nullptr), udpSocket(nullptr) {}
 
@@ -158,15 +159,21 @@ bool NetworkManager::connectToServer(const std::string& host, int port) {
 
 std::string NetworkManager::getMediaList() {
     // API endpoint for media list
-    return httpGet("http://" + std::string(SDLNet_GetIPString(&serverAddress)) + ":8080/api/media");
+    char ipStr[256];
+    SDLNet_GetIPString(&serverAddress, ipStr, sizeof(ipStr));
+    return httpGet("http://" + std::string(ipStr) + ":8080/api/media");
 }
 
 std::string NetworkManager::getMediaInfo(const std::string& id) {
-    return httpGet("http://" + std::string(SDLNet_GetIPString(&serverAddress)) + ":8080/api/media/" + id);
+    char ipStr[256];
+    SDLNet_GetIPString(&serverAddress, ipStr, sizeof(ipStr));
+    return httpGet("http://" + std::string(ipStr) + ":8080/api/media/" + id);
 }
 
 std::string NetworkManager::streamMedia(const std::string& id) {
-    return httpGet("http://" + std::string(SDLNet_GetIPString(&serverAddress)) + ":8080/stream/" + id);
+    char ipStr[256];
+    SDLNet_GetIPString(&serverAddress, ipStr, sizeof(ipStr));
+    return httpGet("http://" + std::string(ipStr) + ":8080/stream/" + id);
 }
 
 bool NetworkManager::connectWebSocket(const std::string& url) {

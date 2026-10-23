@@ -8,6 +8,11 @@
 #include <vector>
 #include <memory>
 
+// Forward declarations
+class UIManager;
+class ControllerManager;
+class HoundClient;
+
 class App {
 public:
     App();
