@@ -7,11 +7,9 @@ project(HoundAppWiiU CXX C)
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
-# Wii U toolchain settings
-set(CMAKE_TOOLCHAIN_FILE ${WUT_ROOT}/share/wut.toolchain.cmake CACHE STRING "Wii U toolchain")
+# Find required packages - use devkitPro's portlibs
+list(APPEND CMAKE_PREFIX_PATH "$ENV{DEVKITPRO}/portlibs/wiiu")
 
-# Find required packages - use devkitPro CMake wrappers
-find_package(WiiU REQUIRED)
 find_package(SDL2 REQUIRED)
 find_package(SDL2_image REQUIRED)
 find_package(SDL2_ttf REQUIRED)
@@ -32,7 +30,7 @@ link_directories(
     ${SDL2_IMAGE_LIBRARY_DIRS}
     ${SDL2_TTF_LIBRARY_DIRS}
     ${SDL2_NET_LIBRARY_DIRS}
-    ${WUT_ROOT}/portlibs/wiiu/lib
+    $ENV{DEVKITPRO}/portlibs/wiiu/lib
 )
 
 # Source files
@@ -48,7 +46,6 @@ target_link_libraries(hound_app_wiiu
     ${SDL2_IMAGE_LIBRARIES}
     ${SDL2_TTF_LIBRARIES}
     ${SDL2_NET_LIBRARIES}
-    wut
 )
 
 # Wii U specific settings

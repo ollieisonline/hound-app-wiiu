@@ -78,7 +78,6 @@ fi
 # Run CMake with Wii U toolchain
 $CMAKE_CMD .. \
     -DCMAKE_BUILD_TYPE=Release \
-    -DCMAKE_TOOLCHAIN_FILE=$WUT_ROOT/share/wut.toolchain.cmake \
     -DCMAKE_PREFIX_PATH=$CMAKE_PREFIX_PATH
 
 # Build the project
