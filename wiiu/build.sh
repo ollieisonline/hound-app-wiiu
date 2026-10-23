@@ -31,9 +31,20 @@ echo "WUT_ROOT: $WUT_ROOT"
 
 # Check for compiler
 if ! command -v powerpc-eabi-g++ &> /dev/null; then
-    echo "ERROR: Wii U compiler not found"
-    echo "Please install wiiu-dev package"
-    exit 1
+    # Try common locations
+    if [ -f "$DEVKITPRO/devkitPPC/bin/powerpc-eabi-g++" ]; then
+        export PATH="$DEVKITPRO/devkitPPC/bin:$PATH"
+    elif [ -f "$DEVKITPRO/wut/bin/powerpc-eabi-g++" ]; then
+        export PATH="$DEVKITPRO/wut/bin:$PATH"
+    else
+        echo "ERROR: Wii U compiler not found"
+        echo "Checked:"
+        echo "  - $DEVKITPRO/devkitPPC/bin/powerpc-eabi-g++"
+        echo "  - $DEVKITPRO/wut/bin/powerpc-eabi-g++"
+        echo "  - PATH: $PATH"
+        echo "Please install wiiu-dev package"
+        exit 1
+    fi
 fi
 
 # Create build directory
@@ -48,8 +59,24 @@ echo "Using devkitPro CMake wrapper..."
 CMAKE_PREFIX_PATH="$DEVKITPRO/portlibs/wiiu"
 export CMAKE_PREFIX_PATH
 
+# Find the CMake wrapper
+CMAKE_CMD=""
+if [ -f "$DEVKITPRO/portlibs/wiiu/bin/powerpc-eabi-cmake" ]; then
+    CMAKE_CMD="$DEVKITPRO/portlibs/wiiu/bin/powerpc-eabi-cmake"
+elif [ -f "$DEVKITPRO/wut/bin/powerpc-eabi-cmake" ]; then
+    CMAKE_CMD="$DEVKITPRO/wut/bin/powerpc-eabi-cmake"
+elif command -v powerpc-eabi-cmake &> /dev/null; then
+    CMAKE_CMD="powerpc-eabi-cmake"
+else
+    echo "ERROR: powerpc-eabi-cmake not found"
+    echo "Checked:"
+    echo "  - $DEVKITPRO/portlibs/wiiu/bin/powerpc-eabi-cmake"
+    echo "  - $DEVKITPRO/wut/bin/powerpc-eabi-cmake"
+    exit 1
+fi
+
 # Run CMake with Wii U toolchain
-powerpc-eabi-cmake .. \
+$CMAKE_CMD .. \
     -DCMAKE_BUILD_TYPE=Release \
     -DCMAKE_TOOLCHAIN_FILE=$WUT_ROOT/share/wut.toolchain.cmake \
     -DCMAKE_PREFIX_PATH=$CMAKE_PREFIX_PATH
