@@ -40,12 +40,16 @@ file(GLOB HEADERS "include/*.h" "include/*.hpp")
 # Executable
 add_executable(hound_app_wiiu ${SOURCES} ${HEADERS})
 
-# Link libraries
+# Link libraries - explicitly link all SDL2 libraries
 target_link_libraries(hound_app_wiiu
     ${SDL2_LIBRARIES}
     ${SDL2_IMAGE_LIBRARIES}
     ${SDL2_TTF_LIBRARIES}
     ${SDL2_NET_LIBRARIES}
+    SDL2
+    SDL2_image
+    SDL2_ttf
+    SDL2_net
 )
 
 # Wii U specific settings
